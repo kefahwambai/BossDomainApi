@@ -23,12 +23,10 @@ module Bossapi
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
-    config.before_configuration do
-      env_file = File.join(Rails.root, 'config', '.env')
-      YAML.load(File.open(env_file)).each do |key, value|
-        ENV[key.to_s] = value
-      end if File.exist?(env_file)
-    end
+    
+    # Load environment variables from .env
+    Dotenv.load(*Dir[Rails.root.join(".env*")])
+    
     config.api_only = true
   end
 end

@@ -35,7 +35,11 @@ class ProductsController < ApplicationController
 
   # DELETE /products/1
   def destroy
-    @product.destroy
+    if @product.destroy
+      render json: { message: 'Product was successfully destroyed.' }
+    else
+      render json: { error: 'Unable to destroy the product.' }, status: :unprocessable_entity
+    end
   end
 
   private
@@ -46,6 +50,6 @@ class ProductsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def product_params
-      params.permit(:name, :description, :amount)
+      params.permit(:name, :description, :amount, :image_url)
     end
 end
